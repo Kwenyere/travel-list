@@ -104,6 +104,13 @@ function Item({ item, onDeleteItem, onToggleItem }) {
 }
 
 function Stats({ items }) {
+  if (!items.length)
+    return (
+      <p className="stats">
+        <em>Start adding some items to your parking list</em>
+      </p>
+    );
+
   const numItems = items.length;
   const numPacked = items.filter((item) => item.packed).length;
   const numPercentage = Math.round((numPacked / numItems) * 100);
