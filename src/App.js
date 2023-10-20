@@ -18,6 +18,10 @@ export default function App() {
       )
     );
   }
+
+  function handleClearList() {
+    setItem([]);
+  }
   return (
     <div className="app">
       <Logo />
@@ -26,6 +30,7 @@ export default function App() {
         items={items}
         onDeleteItem={handleDeleteItem}
         onToggleItem={handleToggleItem}
+        onClearList={handleClearList}
       />
       <Stats items={items} />
     </div>
@@ -48,6 +53,7 @@ function Form({ onAddItems }) {
     setDescription("");
     setQuantity(1);
   }
+
   return (
     <form className="add-form" onSubmit={handleSubmit}>
       <h3>What do you need for your 😍 trip?</h3>
@@ -68,12 +74,21 @@ function Form({ onAddItems }) {
     </form>
   );
 }
-function ParkingList({ items, onDeleteItem, onToggleItem }) {
+function ParkingList({ items, onDeleteItem, onToggleItem, onClearList }) {
   const [sortBy, setSortBy] = useState("input");
+
+  let sortedItems;
+  if (sortBy === "input") sortedItems = items;
+  if (sortBy === "description")
+    sortedItems = items
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description));
+  if (sortBy) sortedItems = items.slice().sort((a, b) => +a.packed - +b.packed);
+
   return (
     <div className="list">
       <ul>
-        {items.map((item) => (
+        {sortedItems.map((item) => (
           <Item
             item={item}
             onDeleteItem={onDeleteItem}
@@ -88,6 +103,7 @@ function ParkingList({ items, onDeleteItem, onToggleItem }) {
           <option value="description">Sort by description order</option>
           <option value="packed">Sort by input packed status</option>
         </select>
+        <button onClick={onClearList}>Clear List</button>
       </div>
     </div>
   );
