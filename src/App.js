@@ -69,7 +69,7 @@ function Form({ onAddItems }) {
   );
 }
 function ParkingList({ items, onDeleteItem, onToggleItem }) {
-  const [sortBy, steSortBy] = useState("input");
+  const [sortBy, setSortBy] = useState("input");
   return (
     <div className="list">
       <ul>
@@ -83,7 +83,7 @@ function ParkingList({ items, onDeleteItem, onToggleItem }) {
         ))}
       </ul>
       <div className="actions">
-        <select value={sortBy}>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="input">Sort by input order</option>
           <option value="description">Sort by description order</option>
           <option value="packed">Sort by input packed status</option>
